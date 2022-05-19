@@ -1,8 +1,12 @@
 package it.polito.tdp.extflightdelays;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import org.jgrapht.Graph;
+
+import it.polito.tdp.extflightdelays.model.Airport;
 import it.polito.tdp.extflightdelays.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,10 +32,10 @@ public class FXMLController {
     private TextField compagnieMinimo; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbBoxAeroportoPartenza"
-    private ComboBox<?> cmbBoxAeroportoPartenza; // Value injected by FXMLLoader
+    private ComboBox<Airport> cmbBoxAeroportoPartenza; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbBoxAeroportoDestinazione"
-    private ComboBox<?> cmbBoxAeroportoDestinazione; // Value injected by FXMLLoader
+    private ComboBox<Airport> cmbBoxAeroportoDestinazione; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnAnalizza"
     private Button btnAnalizza; // Value injected by FXMLLoader
@@ -41,12 +45,25 @@ public class FXMLController {
 
     @FXML
     void doAnalizzaAeroporti(ActionEvent event) {
-
+    	txtResult.clear();
+    	int x;
+    	
+    	try {
+    	x = Integer.parseInt(this.compagnieMinimo.getText());
+    	} catch (NumberFormatException e) {
+			txtResult.setText("Inserisci un valore numerico!");
+			return;
+		}
+    	
+    	this.model.creaGrafo(x);
+    	
+    	this.cmbBoxAeroportoPartenza.getItems().addAll(this.model.getAirports());
+    	this.cmbBoxAeroportoDestinazione.getItems().addAll(this.model.getAirports());
     }
 
     @FXML
     void doTestConnessione(ActionEvent event) {
-
+    	List<Airport> percorso;
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
